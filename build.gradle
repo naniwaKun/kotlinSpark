@@ -1,0 +1,33 @@
+buildscript {
+    ext {
+        KOTLIN_VERSION = "1.1.4"
+    }
+
+    repositories {
+        mavenCentral()
+    }
+    
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${KOTLIN_VERSION}"
+    }
+}
+
+apply plugin: "kotlin"
+
+repositories {
+    mavenCentral()
+    maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
+}
+
+dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib:${KOTLIN_VERSION}"
+    compile "com.sparkjava:spark-kotlin:1.0.0-alpha"
+}
+task mkJar(type: Jar) {
+    manifest {
+        attributes 'Main-Class': 'test.MainKt'
+    }
+
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+    }
